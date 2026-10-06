@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Manali Trip - Settle</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "outline": "#88828e",
+          "outline-variant": "#e7dfd8",
+          "on-error-container": "#93000a",
+          "secondary-fixed": "#d8f3e5",
+          "surface-container-lowest": "#ffffff",
+          "error": "#d4634f",
+          "error-container": "#ffede8",
+          "surface-dim": "#f0e6dd",
+          "primary": "#7564d6",
+          "primary-container": "#8b7be8",
+          "on-primary": "#ffffff",
+          "secondary": "#2e7d5a",
+          "surface": "#FAF7F2",
+          "background": "#FAF7F2",
+          "surface-container": "#f4ede4",
+          "surface-container-high": "#ede3d8",
+          "surface-container-low": "#fbf8f4",
+          "on-background": "#292429",
+          "on-surface": "#2d2630",
+          "on-surface-variant": "#6f6775",
+          "pastel-sage": "#e6f6ee",
+          "pastel-sage-border": "#b8e7cf",
+          "pastel-sage-text": "#1e6d4c",
+          "pastel-peach": "#fdf0ec",
+          "pastel-peach-border": "#fcd6cb",
+          "pastel-peach-text": "#b84728",
+          "pastel-lavender": "#f1eeff",
+          "pastel-lavender-border": "#dad4fc",
+          "pastel-lavender-text": "#6552cf",
+          "pastel-amber": "#fef7e8",
+          "pastel-amber-border": "#fae3b3",
+          "pastel-amber-text": "#945c12"
+        },
+        "borderRadius": {
+          "DEFAULT": "1rem",
+          "lg": "1.25rem",
+          "xl": "1.5rem",
+          "2xl": "1.25rem",
+          "3xl": "1.75rem",
+          "full": "9999px"
+        },
+        "fontFamily": {
+          "sans": ["Plus Jakarta Sans", "sans-serif"],
+          "display": ["Plus Jakarta Sans", "sans-serif"]
+        },
+        "boxShadow": {
+          "soft-card": "0 8px 24px -6px rgba(139, 123, 232, 0.08), 0 2px 8px -2px rgba(45, 38, 48, 0.04)",
+          "soft-sm": "0 4px 14px -3px rgba(139, 123, 232, 0.06)",
+          "pill-glow": "0 8px 20px -4px rgba(139, 123, 232, 0.35)"
+        }
+      },
+    },
+  }
+</script>
+<style>
+  body {
+    min-height: max(884px, 100dvh);
+    background-color: #FAF7F2;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+</style>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen pb-28 selection:bg-primary-container selection:text-white">
+<!-- Top Navigation Bar (Cozy Pill Header) -->
+<header class="sticky top-0 z-40 bg-[#FAF7F2]/90 backdrop-blur-md border-b border-outline-variant/40">
+<div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
+<!-- Back Chevron with Group Context -->
+<a class="flex items-center gap-1.5 text-primary hover:text-primary/80 active:scale-95 transition-all py-1 px-2.5 -ml-1 rounded-full bg-pastel-lavender/60" href="#">
+<span class="material-symbols-outlined text-[20px] font-bold" data-icon="chevron_left">chevron_left</span>
+<span class="text-sm font-semibold tracking-tight">Groups</span>
+</a>
+<!-- Group Title -->
+<div class="flex flex-col items-center">
+<div class="flex items-center gap-1.5">
+<span class="text-lg leading-none">🏔️</span>
+<h1 class="text-base font-bold text-on-surface tracking-tight">Manali Trip</h1>
+</div>
+<span class="text-[11px] font-medium text-on-surface-variant">4 members active</span>
+</div>
+<!-- Trailing Action: Group Settings / Add Member -->
+<div class="flex items-center gap-1">
+<button aria-label="Group Details and Settings" class="w-9 h-9 rounded-full flex items-center justify-center text-on-surface bg-surface-container/60 hover:bg-surface-container active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="person_add">person_add</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Canvas Container -->
+<main class="max-w-md mx-auto px-4 pt-3.5 space-y-4">
+<!-- Group Overview Card (Soft Pillowy 3xl Card) -->
+<section class="bg-surface-container-lowest rounded-3xl p-5 shadow-soft-card border border-outline-variant/50 relative overflow-hidden">
+<!-- Top Pill & Title -->
+<div class="flex items-center justify-between pb-3.5">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-2xl bg-pastel-lavender border border-pastel-lavender-border flex items-center justify-center text-2xl shadow-inner">
+          🏔️
+        </div>
+<div>
+<h2 class="text-lg font-bold text-on-surface leading-tight">Manali Trip</h2>
+<p class="text-xs text-on-surface-variant font-medium mt-0.5">Created by Harsh • Oct 2023</p>
+</div>
+</div>
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-pastel-sage text-pastel-sage-text border border-pastel-sage-border/70">
+<span class="w-2 h-2 rounded-full bg-[#34a853] animate-pulse"></span>
+        Active
+      </span>
+</div>
+<!-- Financial Metrics Sub-card (Warm Cream Inset) -->
+<div class="grid grid-cols-2 gap-2 py-3.5 px-4 rounded-2xl bg-[#F8F3EA] border border-outline-variant/30">
+<!-- Total Spent -->
+<div class="flex flex-col">
+<span class="text-xs font-medium text-on-surface-variant">Total Spent</span>
+<span class="text-xl font-bold text-on-surface tracking-tight mt-0.5">₹18,420</span>
+</div>
+<!-- Personal Balance -->
+<div class="flex flex-col border-l border-outline-variant/40 pl-4">
+<span class="text-xs font-medium text-on-surface-variant">Your Balance</span>
+<div class="flex items-baseline gap-1 mt-0.5">
+<span class="text-pastel-sage-text text-xl font-bold tracking-tight">+ ₹1,240</span>
+</div>
+</div>
+</div>
+<!-- Explicit Positive Status Badge -->
+<div class="mt-3 mb-4 flex items-center gap-2 px-3.5 py-2 rounded-xl bg-pastel-sage border border-pastel-sage-border text-pastel-sage-text">
+<span class="material-symbols-outlined text-[18px] font-bold" data-icon="arrow_upward">arrow_upward</span>
+<span class="text-xs font-semibold">You are owed ₹1,240 overall</span>
+</div>
+<!-- Friendly Pill CTA Buttons -->
+<div class="grid grid-cols-2 gap-2.5">
+<button class="h-11 rounded-full bg-primary-container text-white text-sm font-semibold flex items-center justify-center gap-1.5 shadow-pill-glow hover:opacity-95 active:scale-[0.98] transition-all" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="add">add</span>
+<span>Add Expense</span>
+</button>
+<button class="h-11 rounded-full bg-surface-container-low text-on-surface border border-outline-variant/60 text-sm font-semibold flex items-center justify-center gap-1.5 hover:bg-surface-container active:scale-[0.98] transition-all" type="button">
+<span class="material-symbols-outlined text-[18px] text-primary" data-icon="bolt">bolt</span>
+<span>Settle Balances</span>
+</button>
+</div>
+</section>
+<!-- Segmented Control Pill Tabs with Smooth Pastel Highlight -->
+<nav aria-label="Group Sections" class="bg-surface-container-high/60 p-1.5 rounded-full flex items-center text-center border border-outline-variant/40">
+<button class="flex-1 py-1.5 px-3 rounded-full bg-white text-primary text-xs font-bold shadow-soft-sm transition-all" type="button">
+      Expenses
+    </button>
+<button class="flex-1 py-1.5 px-3 rounded-full text-on-surface-variant hover:text-on-surface text-xs font-semibold transition-all" type="button">
+      Balances
+    </button>
+<button class="flex-1 py-1.5 px-3 rounded-full text-on-surface-variant hover:text-on-surface text-xs font-semibold transition-all" type="button">
+      Settle
+    </button>
+<button class="flex-1 py-1.5 px-3 rounded-full text-on-surface-variant hover:text-on-surface text-xs font-semibold transition-all" type="button">
+      Analytics
+    </button>
+</nav>
+<!-- Member Balances Preview Carousel/Chips -->
+<section class="space-y-2">
+<div class="flex items-center justify-between px-1">
+<h3 class="text-xs font-bold text-on-surface-variant tracking-wider uppercase">Member Balances</h3>
+<a class="text-xs font-semibold text-primary hover:underline" href="#">View Breakdown</a>
+</div>
+<div class="flex gap-2.5 overflow-x-auto pb-1.5 pt-0.5 no-scrollbar scroll-smooth">
+<!-- Harsh (You) -->
+<div class="flex-shrink-0 w-36 bg-surface-container-lowest p-3 rounded-2xl border border-pastel-sage-border shadow-soft-sm flex flex-col justify-between">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-pastel-lavender border border-pastel-lavender-border text-pastel-lavender-text flex items-center justify-center font-bold text-xs">
+            H
+          </div>
+<span class="text-xs font-bold text-on-surface truncate">Harsh (You)</span>
+</div>
+<div class="mt-2.5">
+<span class="text-xs font-bold text-pastel-sage-text block leading-tight">+₹1,240</span>
+<span class="text-[10px] font-medium text-on-surface-variant leading-none">Gets ₹1,240</span>
+</div>
+</div>
+<!-- Rahul -->
+<div class="flex-shrink-0 w-36 bg-surface-container-lowest p-3 rounded-2xl border border-pastel-peach-border shadow-soft-sm flex flex-col justify-between">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-pastel-peach border border-pastel-peach-border text-pastel-peach-text flex items-center justify-center font-bold text-xs">
+            R
+          </div>
+<span class="text-xs font-bold text-on-surface truncate">Rahul</span>
+</div>
+<div class="mt-2.5">
+<span class="text-xs font-bold text-pastel-peach-text block leading-tight">-₹500</span>
+<span class="text-[10px] font-medium text-on-surface-variant leading-none">Owes ₹500</span>
+</div>
+</div>
+<!-- Aman -->
+<div class="flex-shrink-0 w-36 bg-surface-container-lowest p-3 rounded-2xl border border-pastel-sage-border shadow-soft-sm flex flex-col justify-between">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-pastel-sage border border-pastel-sage-border text-pastel-sage-text flex items-center justify-center font-bold text-xs">
+            A
+          </div>
+<span class="text-xs font-bold text-on-surface truncate">Aman</span>
+</div>
+<div class="mt-2.5">
+<span class="text-xs font-bold text-pastel-sage-text block leading-tight">+₹260</span>
+<span class="text-[10px] font-medium text-on-surface-variant leading-none">Gets ₹260</span>
+</div>
+</div>
+<!-- Piyush -->
+<div class="flex-shrink-0 w-36 bg-surface-container-lowest p-3 rounded-2xl border border-pastel-peach-border shadow-soft-sm flex flex-col justify-between">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-pastel-peach border border-pastel-peach-border text-pastel-peach-text flex items-center justify-center font-bold text-xs">
+            P
+          </div>
+<span class="text-xs font-bold text-on-surface truncate">Piyush</span>
+</div>
+<div class="mt-2.5">
+<span class="text-xs font-bold text-pastel-peach-text block leading-tight">-₹1,000</span>
+<span class="text-[10px] font-medium text-on-surface-variant leading-none">Owes ₹1,000</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Trip Expenses Feed (Pillowy 3xl Card Container) -->
+<section class="space-y-2 pt-1">
+<div class="flex items-center justify-between px-1">
+<h3 class="text-xs font-bold text-on-surface-variant tracking-wider uppercase">Trip Expenses</h3>
+<span class="text-xs text-on-surface-variant font-medium">Sorted by recent</span>
+</div>
+<!-- Soft Pillowy List Container -->
+<div class="bg-surface-container-lowest rounded-3xl border border-outline-variant/50 shadow-soft-card overflow-hidden divide-y divide-outline-variant/30">
+<!-- Expense Item 4: Paragliding Tickets (14 Oct) -->
+<article class="p-4 flex items-center justify-between hover:bg-surface-container-low/60 active:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-3.5">
+<!-- Gentle Lavender Category Badge -->
+<div class="w-11 h-11 rounded-2xl bg-pastel-lavender border border-pastel-lavender-border flex items-center justify-center text-primary-container flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]" data-icon="paragliding">paragliding</span>
+</div>
+<div class="flex flex-col">
+<h4 class="text-sm font-bold text-on-surface tracking-tight">Paragliding Tickets</h4>
+<p class="text-xs text-on-surface-variant font-medium">Paid by Piyush • Split equally (4)</p>
+<span class="text-[11px] font-medium text-outline mt-0.5">14 Oct</span>
+</div>
+</div>
+<div class="flex flex-col items-end pl-2">
+<span class="text-base font-bold text-on-surface tracking-tight">₹2,000</span>
+<span class="text-[11px] font-semibold text-pastel-peach-text bg-pastel-peach border border-pastel-peach-border px-2.5 py-0.5 rounded-full mt-1">
+            You owe ₹500
+          </span>
+</div>
+</article>
+<!-- Expense Item 3: Rohtang Cab Taxi (13 Oct) -->
+<article class="p-4 flex items-center justify-between hover:bg-surface-container-low/60 active:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-3.5">
+<!-- Gentle Amber Category Badge -->
+<div class="w-11 h-11 rounded-2xl bg-pastel-amber border border-pastel-amber-border flex items-center justify-center text-pastel-amber-text flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]" data-icon="local_taxi">local_taxi</span>
+</div>
+<div class="flex flex-col">
+<h4 class="text-sm font-bold text-on-surface tracking-tight">Rohtang Cab Taxi</h4>
+<p class="text-xs text-on-surface-variant font-medium">Paid by Aman • Split 3 ways</p>
+<span class="text-[11px] font-medium text-outline mt-0.5">13 Oct • Harsh, Aman, Piyush</span>
+</div>
+</div>
+<div class="flex flex-col items-end pl-2">
+<span class="text-base font-bold text-on-surface tracking-tight">₹1,200</span>
+<span class="text-[11px] font-semibold text-pastel-peach-text bg-pastel-peach border border-pastel-peach-border px-2.5 py-0.5 rounded-full mt-1">
+            You owe ₹400
+          </span>
+</div>
+</article>
+<!-- Expense Item 2: Riverside Cafe Dinner (13 Oct) -->
+<article class="p-4 flex items-center justify-between hover:bg-surface-container-low/60 active:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-3.5">
+<!-- Gentle Peach Category Badge -->
+<div class="w-11 h-11 rounded-2xl bg-pastel-peach border border-pastel-peach-border flex items-center justify-center text-pastel-peach-text flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]" data-icon="restaurant">restaurant</span>
+</div>
+<div class="flex flex-col">
+<h4 class="text-sm font-bold text-on-surface tracking-tight">Riverside Cafe Dinner</h4>
+<p class="text-xs text-on-surface-variant font-medium">Paid by Rahul • Split equally (4)</p>
+<span class="text-[11px] font-medium text-outline mt-0.5">13 Oct</span>
+</div>
+</div>
+<div class="flex flex-col items-end pl-2">
+<span class="text-base font-bold text-on-surface tracking-tight">₹1,800</span>
+<span class="text-[11px] font-semibold text-pastel-peach-text bg-pastel-peach border border-pastel-peach-border px-2.5 py-0.5 rounded-full mt-1">
+            You owe ₹450
+          </span>
+</div>
+</article>
+<!-- Expense Item 1: Hotel Snow Crest (12 Oct) -->
+<article class="p-4 flex items-center justify-between hover:bg-surface-container-low/60 active:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-3.5">
+<!-- Gentle Sage Category Badge -->
+<div class="w-11 h-11 rounded-2xl bg-pastel-sage border border-pastel-sage-border flex items-center justify-center text-pastel-sage-text flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]" data-icon="hotel">hotel</span>
+</div>
+<div class="flex flex-col">
+<h4 class="text-sm font-bold text-on-surface tracking-tight">Hotel Snow Crest</h4>
+<p class="text-xs text-on-surface-variant font-medium">Paid by Harsh • Split equally (4)</p>
+<span class="text-[11px] font-medium text-outline mt-0.5">12 Oct</span>
+</div>
+</div>
+<div class="flex flex-col items-end pl-2">
+<span class="text-base font-bold text-on-surface tracking-tight">₹6,000</span>
+<span class="text-[11px] font-semibold text-pastel-sage-text bg-pastel-sage border border-pastel-sage-border px-2.5 py-0.5 rounded-full mt-1">
+            + ₹4,500 owed
+          </span>
+</div>
+</article>
+</div>
+</section>
+<!-- Activity Footer Summary -->
+<div class="text-center py-2">
+<p class="text-xs text-on-surface-variant font-medium">All balances calculate multi-hop debt simplification</p>
+</div>
+</main>
+<!-- BottomNavBar (Comfy Warm Aesthetic) -->
+<nav class="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around w-full px-2 py-2 pb-6 max-w-md mx-auto bg-[#FAF7F2]/90 backdrop-blur-xl border-t border-outline-variant/40 shadow-soft-card">
+<!-- Home -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-95 py-1 px-3 rounded-xl" href="#">
+<span class="material-symbols-outlined text-[23px]" data-icon="home">home</span>
+<span class="text-[11px] font-medium mt-0.5">Home</span>
+</a>
+<!-- Expenses -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-95 py-1 px-3 rounded-xl" href="#">
+<span class="material-symbols-outlined text-[23px]" data-icon="receipt_long">receipt_long</span>
+<span class="text-[11px] font-medium mt-0.5">Expenses</span>
+</a>
+<!-- Add (Quick Action) -->
+<a class="flex flex-col items-center justify-center text-primary-container hover:scale-105 transition-all active:scale-95 -mt-3.5" href="#">
+<div class="w-12 h-12 rounded-full bg-primary-container text-white flex items-center justify-center shadow-pill-glow">
+<span class="material-symbols-outlined text-[26px]" data-icon="add">add</span>
+</div>
+<span class="text-[11px] font-bold text-primary-container mt-0.5">Add</span>
+</a>
+<!-- Groups (Active) -->
+<a class="flex flex-col items-center justify-center text-primary font-bold active:scale-95 transition-all py-1 px-3 rounded-xl bg-pastel-lavender/60" href="#">
+<span class="material-symbols-outlined text-[23px]" data-icon="group" style="font-variation-settings: 'FILL' 1;">group</span>
+<span class="text-[11px] font-bold mt-0.5">Groups</span>
+</a>
+<!-- Profile -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-95 py-1 px-3 rounded-xl" href="#">
+<span class="material-symbols-outlined text-[23px]" data-icon="person">person</span>
+<span class="text-[11px] font-medium mt-0.5">Profile</span>
+</a>
+</nav>
+</body></html>

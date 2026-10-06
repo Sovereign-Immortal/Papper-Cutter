@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Smart Settlement - Settle</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "outline": "#797584",
+          "inverse-on-surface": "#faefe5",
+          "on-secondary-container": "#227151",
+          "tertiary-fixed-dim": "#ffb59e",
+          "background": "#FAF7F2",
+          "on-primary-fixed": "#1a0063",
+          "secondary-fixed": "#d5f3e4",
+          "tertiary-fixed": "#fde4dc",
+          "on-primary-container": "#fffbff",
+          "surface-tint": "#5e4eb8",
+          "on-tertiary-fixed": "#3a0b00",
+          "on-surface": "#2d2621",
+          "inverse-surface": "#352f29",
+          "surface": "#FAF7F2",
+          "surface-container-highest": "#ebe1d7",
+          "tertiary-container": "#fcebe6",
+          "secondary": "#2e7d5b",
+          "on-secondary-fixed-variant": "#005236",
+          "on-tertiary-fixed-variant": "#76321c",
+          "error-container": "#ffdad6",
+          "on-error": "#ffffff",
+          "inverse-primary": "#c9bfff",
+          "surface-bright": "#fff8f4",
+          "on-tertiary": "#ffffff",
+          "on-secondary": "#ffffff",
+          "primary": "#6B5CA5",
+          "on-tertiary-container": "#fffbff",
+          "surface-container": "#f5ede3",
+          "on-secondary-fixed": "#002113",
+          "on-primary-fixed-variant": "#46349e",
+          "tertiary": "#c85a3c",
+          "primary-container": "#7D6DBF",
+          "surface-variant": "#f0e6db",
+          "on-error-container": "#93000a",
+          "surface-container-high": "#ebe0d4",
+          "on-primary": "#ffffff",
+          "error": "#ba1a1a",
+          "secondary-fixed-dim": "#c3ebd5",
+          "on-background": "#2d2621",
+          "surface-container-low": "#fcf5ee",
+          "secondary-container": "#d7f3e5",
+          "surface-dim": "#e3d8cf",
+          "outline-variant": "#e6ded6",
+          "on-surface-variant": "#635c55",
+          "surface-container-lowest": "#ffffff",
+          "primary-fixed-dim": "#c9bfff",
+          "primary-fixed": "#e5deff"
+        },
+        "borderRadius": {
+          "DEFAULT": "1rem",
+          "lg": "1.5rem",
+          "xl": "2rem",
+          "full": "9999px"
+        },
+        "spacing": {
+          "margin": "2rem",
+          "space-xs": "0.375rem",
+          "gutter-mobile": "0.75rem",
+          "space-lg": "1.75rem",
+          "space-md": "1.25rem",
+          "space-sm": "0.75rem",
+          "space-xl": "2.5rem",
+          "margin-mobile": "1rem",
+          "gutter": "1.25rem"
+        },
+        "fontFamily": {
+          "display-lg": ["Plus Jakarta Sans"],
+          "label-md": ["Plus Jakarta Sans"],
+          "body-sm": ["Plus Jakarta Sans"],
+          "headline-sm": ["Plus Jakarta Sans"],
+          "body-md": ["Plus Jakarta Sans"],
+          "headline-lg": ["Plus Jakarta Sans"],
+          "headline-md": ["Plus Jakarta Sans"],
+          "display-lg-mobile": ["Plus Jakarta Sans"],
+          "label-lg": ["Plus Jakarta Sans"],
+          "label-sm": ["Plus Jakarta Sans"],
+          "body-lg": ["Plus Jakarta Sans"]
+        },
+        "fontSize": {
+          "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+          "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+          "body-sm": ["12px", {"lineHeight": "18px", "fontWeight": "400"}],
+          "headline-sm": ["18px", {"lineHeight": "26px", "fontWeight": "700"}],
+          "body-md": ["14px", {"lineHeight": "22px", "fontWeight": "400"}],
+          "headline-lg": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+          "headline-md": ["22px", {"lineHeight": "30px", "fontWeight": "700"}],
+          "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+          "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+          "label-sm": ["11px", {"lineHeight": "14px", "letterSpacing": "0.03em", "fontWeight": "600"}],
+          "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+          "currency-md": ["19px", {"lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+          "currency-display": ["34px", {"lineHeight": "38px", "letterSpacing": "-0.03em", "fontWeight": "800"}]
+        }
+      },
+    }
+  </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased font-body-md text-body-md selection:bg-primary/20 selection:text-primary min-h-screen pb-12">
+<!-- Mobile Viewport Container max-w-md mx-auto -->
+<div class="max-w-md mx-auto min-h-screen flex flex-col relative bg-background">
+<!-- Top Navigation Bar (Task focused sub-page with Back context) -->
+<header class="sticky top-0 z-40 bg-[#FAF7F2]/90 backdrop-blur-xl px-space-md py-space-sm flex items-center justify-between border-b border-outline-variant/40">
+<button class="flex items-center gap-1.5 text-primary hover:text-primary-container transition-transform active:scale-95 focus:outline-none" type="button">
+<span class="material-symbols-outlined text-[20px] font-bold">arrow_back_ios</span>
+<span class="font-label-lg text-label-lg tracking-tight font-semibold">Manali Trip</span>
+</button>
+<div class="flex flex-col items-center">
+<h1 class="font-headline-sm text-[17px] text-on-surface tracking-tight font-bold">Smart Settlement</h1>
+<span class="font-label-sm text-[11px] text-on-surface-variant font-medium">Min-Flow Engine</span>
+</div>
+<button aria-label="Share settlement report" class="w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[20px]">ios_share</span>
+</button>
+</header>
+<!-- Main Scrollable Canvas -->
+<main class="flex-1 px-space-md pt-space-md space-y-4">
+<!-- Algorithm Value Banner (Debt Minimization Insight) - Cozy Lavender -->
+<section class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#8C7DCB] to-[#7565BC] text-white p-4 shadow-sm shadow-purple-900/10">
+<div class="absolute -right-6 -bottom-6 w-32 h-32 rounded-full bg-white/10 blur-xl pointer-events-none"></div>
+<div class="flex items-start gap-3">
+<div class="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white shrink-0 shadow-inner">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">auto_graph</span>
+</div>
+<div class="space-y-1 flex-1">
+<div class="flex items-center gap-2">
+<span class="font-label-lg text-white font-bold tracking-tight">Debt Simplification Active</span>
+<span class="px-2 py-0.5 rounded-full bg-[#d2f3e3] text-[#1b6a48] font-label-sm text-[10px] font-bold tracking-wider uppercase">Optimal</span>
+</div>
+<p class="font-body-sm text-white/90 text-[13px] leading-relaxed">
+              Reduced 7 chaotic cross-payments down to just 2 direct settlements using net-balance optimization.
+            </p>
+</div>
+</div>
+</section>
+<!-- Group Net Balance Breakdown -->
+<section class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/50 shadow-sm space-y-3">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-sm text-[16px] text-on-surface flex items-center gap-2 font-bold">
+<span class="material-symbols-outlined text-primary text-[20px]">account_balance_wallet</span>
+            Net Balances
+          </h2>
+<span class="font-label-sm text-xs text-outline font-medium">Sum: ₹0 (Balanced)</span>
+</div>
+<div class="grid grid-cols-2 gap-2.5 pt-0.5">
+<!-- Harsh (Creditor - Gentle Mint) -->
+<div class="p-3.5 rounded-2xl bg-[#eff9f3] border border-[#d2edd9] flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-6 h-6 rounded-full bg-[#c8eed7] text-[#1e6b49] flex items-center justify-center font-label-sm text-xs font-bold">H</span>
+<span class="font-label-md text-sm text-on-surface font-semibold">Harsh</span>
+</div>
+<span class="material-symbols-outlined text-[17px] text-[#227a53] font-bold">arrow_upward</span>
+</div>
+<div class="mt-2.5">
+<div class="font-currency-md text-currency-md text-[#227a53] font-bold">+₹1,240</div>
+<span class="font-label-sm text-[11px] text-[#2e7d5b] font-medium">To receive</span>
+</div>
+</div>
+<!-- Aman (Creditor - Gentle Mint) -->
+<div class="p-3.5 rounded-2xl bg-[#eff9f3] border border-[#d2edd9] flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-6 h-6 rounded-full bg-[#c8eed7] text-[#1e6b49] flex items-center justify-center font-label-sm text-xs font-bold">A</span>
+<span class="font-label-md text-sm text-on-surface font-semibold">Aman</span>
+</div>
+<span class="material-symbols-outlined text-[17px] text-[#227a53] font-bold">arrow_upward</span>
+</div>
+<div class="mt-2.5">
+<div class="font-currency-md text-currency-md text-[#227a53] font-bold">+₹260</div>
+<span class="font-label-sm text-[11px] text-[#2e7d5b] font-medium">To receive</span>
+</div>
+</div>
+<!-- Rahul (Debtor - Soft Peach) -->
+<div class="p-3.5 rounded-2xl bg-[#fdf2ee] border border-[#fae0d5] flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-6 h-6 rounded-full bg-[#fcdbd0] text-[#a14022] flex items-center justify-center font-label-sm text-xs font-bold">R</span>
+<span class="font-label-md text-sm text-on-surface font-semibold">Rahul</span>
+</div>
+<span class="material-symbols-outlined text-[17px] text-[#c24c29] font-bold">arrow_downward</span>
+</div>
+<div class="mt-2.5">
+<div class="font-currency-md text-currency-md text-[#c24c29] font-bold">-₹500</div>
+<span class="font-label-sm text-[11px] text-[#b04a29] font-medium">Needs to pay</span>
+</div>
+</div>
+<!-- Piyush (Debtor - Soft Peach) -->
+<div class="p-3.5 rounded-2xl bg-[#fdf2ee] border border-[#fae0d5] flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-6 h-6 rounded-full bg-[#fcdbd0] text-[#a14022] flex items-center justify-center font-label-sm text-xs font-bold">P</span>
+<span class="font-label-md text-sm text-on-surface font-semibold">Piyush</span>
+</div>
+<span class="material-symbols-outlined text-[17px] text-[#c24c29] font-bold">arrow_downward</span>
+</div>
+<div class="mt-2.5">
+<div class="font-currency-md text-currency-md text-[#c24c29] font-bold">-₹1,000</div>
+<span class="font-label-sm text-[11px] text-[#b04a29] font-medium">Needs to pay</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Main Section: Simplified Settlement Plan -->
+<section class="space-y-3">
+<div class="flex items-center justify-between px-1">
+<div>
+<h2 class="font-headline-sm text-[17px] text-on-surface font-bold">Simplified Settlement Plan</h2>
+<p class="font-label-sm text-[12px] text-on-surface-variant font-medium">2 pending transfers • 1 settled</p>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-[#ebe4fa] text-primary font-label-sm text-[11px] font-bold">2 Payments</span>
+</div>
+<!-- Transaction Card 1 (Pending with UPI CTA) -->
+<article class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/60 shadow-sm transition-all hover:shadow-md">
+<div class="flex items-center justify-between pb-3 border-b border-outline-variant/40">
+<!-- Flow Path -->
+<div class="flex items-center gap-2.5">
+<div class="flex items-center -space-x-1.5">
+<span class="w-8 h-8 rounded-full bg-[#fde1d8] text-[#a14022] flex items-center justify-center font-label-md text-xs font-bold ring-2 ring-surface-container-lowest shadow-sm">R</span>
+<span class="w-8 h-8 rounded-full bg-[#d0f3df] text-[#1e6b49] flex items-center justify-center font-label-md text-xs font-bold ring-2 ring-surface-container-lowest shadow-sm">H</span>
+</div>
+<div class="flex items-center gap-1.5 font-label-lg text-on-surface">
+<span class="font-bold">Rahul</span>
+<span class="material-symbols-outlined text-outline text-[16px]">arrow_forward</span>
+<span class="font-bold text-primary">Harsh</span>
+</div>
+</div>
+<!-- Status Badge: Warm Amber Dot -->
+<div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#fff6e6] text-[#9c6314] border border-[#f5dfb8]">
+<span class="w-2 h-2 rounded-full bg-[#e89a24] animate-pulse"></span>
+<span class="font-label-sm text-xs font-semibold">Pending</span>
+</div>
+</div>
+<div class="py-3.5 flex items-baseline justify-between">
+<div class="space-y-0.5">
+<span class="font-label-sm text-[12px] text-outline font-medium">Transfer Amount</span>
+<div class="font-currency-display text-currency-display text-on-surface font-bold tracking-tight">₹ 500</div>
+</div>
+<div class="text-right">
+<span class="font-label-sm text-[12px] text-outline font-medium">Via UPI ID</span>
+<p class="font-label-md text-[13px] text-on-surface-variant font-mono bg-surface-container-low px-2 py-0.5 rounded-lg border border-outline-variant/40">harsh@oksbi</p>
+</div>
+</div>
+<!-- Action Buttons (Pill buttons) -->
+<div class="grid grid-cols-2 gap-2.5 pt-1">
+<button class="w-full h-11 rounded-full bg-primary hover:bg-[#5e4eb8] text-white flex items-center justify-center gap-1.5 font-label-lg text-sm font-semibold shadow-sm active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[18px]">smartphone</span>
+<span>Pay via UPI</span>
+</button>
+<button class="w-full h-11 rounded-full bg-[#fcfaf7] border border-outline-variant hover:bg-surface-container text-on-surface flex items-center justify-center gap-1.5 font-label-lg text-sm font-semibold active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-secondary text-[18px] font-bold">check</span>
+<span>Mark as Paid</span>
+</button>
+</div>
+</article>
+<!-- Transaction Card 2 (Pending with Reminder CTA) -->
+<article class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/60 shadow-sm transition-all hover:shadow-md">
+<div class="flex items-center justify-between pb-3 border-b border-outline-variant/40">
+<!-- Flow Path -->
+<div class="flex items-center gap-2.5">
+<div class="flex items-center -space-x-1.5">
+<span class="w-8 h-8 rounded-full bg-[#fde1d8] text-[#a14022] flex items-center justify-center font-label-md text-xs font-bold ring-2 ring-surface-container-lowest shadow-sm">P</span>
+<span class="w-8 h-8 rounded-full bg-[#d0f3df] text-[#1e6b49] flex items-center justify-center font-label-md text-xs font-bold ring-2 ring-surface-container-lowest shadow-sm">H</span>
+</div>
+<div class="flex items-center gap-1.5 font-label-lg text-on-surface">
+<span class="font-bold">Piyush</span>
+<span class="material-symbols-outlined text-outline text-[16px]">arrow_forward</span>
+<span class="font-bold text-primary">Harsh</span>
+</div>
+</div>
+<!-- Status Badge: Warm Amber Dot -->
+<div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#fff6e6] text-[#9c6314] border border-[#f5dfb8]">
+<span class="w-2 h-2 rounded-full bg-[#e89a24] animate-pulse"></span>
+<span class="font-label-sm text-xs font-semibold">Pending</span>
+</div>
+</div>
+<div class="py-3.5 flex items-baseline justify-between">
+<div class="space-y-0.5">
+<span class="font-label-sm text-[12px] text-outline font-medium">Transfer Amount</span>
+<div class="font-currency-display text-currency-display text-on-surface font-bold tracking-tight">₹ 740</div>
+</div>
+<div class="text-right">
+<span class="font-label-sm text-[12px] text-outline font-medium">Remaining share</span>
+<p class="font-label-md text-[13px] text-on-surface-variant font-mono bg-surface-container-low px-2 py-0.5 rounded-lg border border-outline-variant/40">Piyush split</p>
+</div>
+</div>
+<!-- Action Buttons (Pill buttons) -->
+<div class="grid grid-cols-2 gap-2.5 pt-1">
+<button class="w-full h-11 rounded-full bg-[#f3effd] text-primary hover:bg-[#eae3fc] flex items-center justify-center gap-1.5 font-label-lg text-sm font-semibold active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[18px]">notifications_active</span>
+<span>Send Reminder</span>
+</button>
+<button class="w-full h-11 rounded-full bg-[#fcfaf7] border border-outline-variant hover:bg-surface-container text-on-surface flex items-center justify-center gap-1.5 font-label-lg text-sm font-semibold active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-secondary text-[18px] font-bold">check</span>
+<span>Mark as Paid</span>
+</button>
+</div>
+</article>
+<!-- Transaction Card 3 (Completed Demonstration - Soft Mint/Warm Gray) -->
+<article class="bg-[#f5f8f5] rounded-2xl p-4 border border-[#d9e7dd] shadow-none">
+<div class="flex items-center justify-between pb-2.5 border-b border-[#e1ece4]">
+<!-- Flow Path -->
+<div class="flex items-center gap-2.5">
+<div class="flex items-center -space-x-1.5">
+<span class="w-7 h-7 rounded-full bg-[#e3ded9] text-on-surface-variant flex items-center justify-center font-label-sm text-xs font-bold ring-2 ring-[#f5f8f5]">P</span>
+<span class="w-7 h-7 rounded-full bg-[#e3ded9] text-on-surface-variant flex items-center justify-center font-label-sm text-xs font-bold ring-2 ring-[#f5f8f5]">A</span>
+</div>
+<div class="flex items-center gap-1.5 font-label-md text-on-surface-variant">
+<span class="font-medium">Piyush</span>
+<span class="material-symbols-outlined text-outline text-[14px]">arrow_forward</span>
+<span class="font-semibold text-on-surface">Aman</span>
+</div>
+</div>
+<!-- Status: Settled & Confirmed Badge -->
+<div class="flex items-center gap-1 px-3 py-1 rounded-full bg-[#dcf5e7] text-[#1b6b47] border border-[#bee9d1]">
+<span class="w-2 h-2 rounded-full bg-[#248a5c]"></span>
+<span class="font-label-sm text-xs font-bold">Settled &amp; Confirmed</span>
+</div>
+</div>
+<div class="pt-3 flex items-center justify-between">
+<div>
+<span class="font-label-sm text-[11px] text-outline font-medium">Settled Transfer</span>
+<div class="font-currency-md text-currency-md text-on-surface-variant line-through font-semibold">₹ 260</div>
+</div>
+<div class="flex items-center gap-1.5 text-secondary font-label-sm text-xs font-semibold">
+<span class="material-symbols-outlined text-[17px] text-secondary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>Today, 2:15 PM</span>
+</div>
+</div>
+</article>
+</section>
+<!-- Bottom Floating Security & Ledger Note -->
+<section class="pt-1 pb-3">
+<div class="p-3.5 rounded-2xl bg-surface-container-low border border-outline-variant/50 flex items-start gap-3 text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-[22px] mt-0.5 shrink-0" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+<p class="font-label-sm text-xs leading-relaxed text-on-surface-variant font-medium">
+            Deterministic ledger calculations. Settle coordinates the calculation before payment.
+          </p>
+</div>
+</section>
+</main>
+</div>
+</body></html>
