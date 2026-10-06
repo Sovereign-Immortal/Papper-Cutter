@@ -184,18 +184,42 @@ All screens adhere to the **Warm Pastel Harmony** visual tokens:
 
 ---
 
-## 9. How to Test the Flow Locally
+## 9. How to Test the Flow Locally & on Android Hardware
 
-1. Run the interactive web app:
+### 1. Test in Mobile Emulation View
+1. Run the interactive mobile app:
    ```powershell
    cd android-app
+   npm install
    npm run dev
    ```
-2. Navigate to [http://localhost:5173](http://localhost:5173).
+2. Navigate to [http://localhost:5173](http://localhost:5173) and press `F12` (Toggle Device Toolbar to Pixel 7 / iPhone 14).
 3. Test the flow:
    - Click on the **"Manali Roadtrip"** group card.
-   - Tap **"+ Add Expense"** to log a ₹1,200 dinner split.
-   - Tap **"⚡ Settle Up"** to observe the min-flow transaction graph and test UPI links.
+   - Tap **"+ Add Expense"** to test equal, unequal, or AI split modes.
+   - Tap **"⚡ Settle Up"** to observe the min-flow transaction graph and verify 1-click UPI links.
+
+### 2. Package and Test Android APK (Capacitor Pathway)
+```powershell
+cd android-app
+npm run build
+npx cap add android
+npx cap sync android
+cd android && .\gradlew.bat assembleDebug
+# Generated APK: android-app/android/app/build/outputs/apk/debug/app-debug.apk
+# Install directly via ADB:
+adb install app/build/outputs/apk/debug/app-debug.apk
+```
+
+### 3. Native Rust Dioxus Android APK (NDK Pathway)
+```powershell
+# From workspace root:
+cd crates/papper-cutter-mobile
+dx build --platform android --release
+# Or via cargo-apk:
+cargo apk build --package papper-cutter-mobile --release
+# Generated APK: target/release/apk/papper_cutter_mobile.apk
+```
 
 ---
 

@@ -836,4 +836,37 @@ They should only have to answer:
 
 > **"What happened?"**
 
-Settle handles the rest.
+Papper Cutter handles the rest.
+
+------------------------------------------------------------------------
+
+# 42. Native Android Mobile Architecture & APK Generation
+
+Papper Cutter is designed as a **native mobile-first Android application**, supporting two production build pathways to produce installable Android packages (`.apk` and `.aab`):
+
+### Pathway A: Capacitor Android APK (React + TypeScript Core)
+- **Engine**: React 19 + TypeScript packaged via Capacitor 6 into a native Android Studio project.
+- **Hardware Integration**: Native UPI intent dispatching (`android.intent.action.VIEW`), haptic vibrations, status bar styling, and local persistent SQLite/Preferences storage.
+- **APK Compilation**:
+  ```bash
+  cd android-app
+  npm install
+  npm run build
+  npx cap add android
+  npx cap sync android
+  cd android && ./gradlew assembleDebug      # Windows: .\gradlew.bat assembleDebug
+  # Output: android-app/android/app/build/outputs/apk/debug/app-debug.apk
+  ```
+
+### Pathway B: Native Rust Dioxus Android APK (Rust + NDK)
+- **Engine**: 100% native Rust binary built on **Dioxus 0.6** (`crates/papper-cutter-mobile`).
+- **Zero Bridge Overhead**: Links directly with `papper-cutter-domain`, running natively on Linux/Android ARM64 kernels with 60+ FPS native rendering and zero JavaScript runtime latency.
+- **APK Compilation**:
+  ```bash
+  rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+  cd crates/papper-cutter-mobile
+  dx build --platform android --release
+  # Or via cargo-apk:
+  cargo apk build --package papper-cutter-mobile --release
+  # Output: target/release/apk/papper_cutter_mobile.apk
+  ```

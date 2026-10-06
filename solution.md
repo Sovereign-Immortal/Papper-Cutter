@@ -86,21 +86,35 @@ Papper Cutter organizes shared finances into an automated 4-stage pipeline:
 
 ### 4.1 Minor-Unit Integer Financial Arithmetic
 Floating point errors are strictly prohibited. All monetary calculations are performed in minor currency units (paise/cents):
-$$\text{Amount}_{\text{minor}} = \text{round}(\text{Amount}_{\text{major}} \times 100)$$
+
+$$
+\text{Minor Units} = \text{round}(\text{Major Amount} \times 100)
+$$
 
 For an expense of $A$ paise shared equally across $k$ participants, the quotient $q = \lfloor A / k \rfloor$ and remainder $r = A \pmod k$:
-$$\text{Share}_i = \begin{cases} q + 1, & \text{if } i < r \\ q, & \text{if } i \ge r \end{cases}$$
-This guarantees $\sum_{i=0}^{k-1} \text{Share}_i = A$ with exact conservation of money.
+
+$$
+\text{Share}(i) = \begin{cases} q + 1, & \text{if } i < r \\ q, & \text{if } i \ge r \end{cases}
+$$
+
+This guarantees $\sum_{i=0}^{k-1} \text{Share}(i) = A$ with exact conservation of money.
 
 ### 4.2 Net Balance Formulation
 For each member $m$ in group $G$, their net financial position $B(m)$ is:
-$$B(m) = \sum_{e \in E} \text{Contribution}(m, e) - \sum_{e \in E} \text{Share}(m, e)$$
+
+$$
+B(m) = \sum_{e \in E} \text{Contribution}(m, e) - \sum_{e \in E} \text{Share}(m, e)
+$$
+
 Where:
 - $\text{Contribution}(m, e)$ is the amount member $m$ paid upfront for expense $e$.
 - $\text{Share}(m, e)$ is the amount member $m$ owes for expense $e$.
 
 **Zero-Sum Invariant**: Across all members $M$, total net balance is always zero:
-$$\sum_{m \in M} B(m) = 0$$
+
+$$
+\sum_{m \in M} B(m) = 0
+$$
 
 ### 4.3 Min-Flow Debt Simplification Algorithm
 To eliminate circular and redundant debts, Papper Cutter separates members into Creditors ($B(m) > 0$) and Debtors ($B(m) < 0$). It computes the minimal set of transactions using a greedy bipartite settlement algorithm:
@@ -145,7 +159,8 @@ Papper Cutter follows a strict 4-layer clean architecture separating business lo
 ```
 ┌────────────────────────────────────────────────────────┐
 │                   Presentation Layer                   │
-│      React (Vite) / iOS-Inspired UI / Capacitor        │
+│  Option A: React 19 + TypeScript + Capacitor (APK)     │
+│  Option B: Native Rust Dioxus 0.6 + Android NDK (APK)  │
 ├────────────────────────────────────────────────────────┤
 │             Application & State Layer                  │
 │       AppContext / Custom Hooks / Form Validation      │
@@ -178,22 +193,21 @@ Papper-Cutter/
 │           ├── add_expense.png
 │           └── smart_settlement.png
 │
-├── android-app/                          # React + TypeScript + Vite Android App
+├── android-app/                          # React 19 + TypeScript Android App Shell
 │   ├── src/
 │   │   ├── domain/                       # Core financial engine (TS mirror)
 │   │   │   ├── types.ts                  # Domain models & split types
 │   │   │   ├── money.ts                  # Integer minor unit math
 │   │   │   ├── balance.ts                # Net balance calculation
 │   │   │   └── settlement.ts             # Greedy min-flow algorithm
-│   │   ├── context/                      # Reactive global state
+│   │   ├── state/                        # Reactive global state
 │   │   │   └── AppContext.tsx
 │   │   ├── components/                   # Modular UI components
-│   │   │   ├── Navbar.tsx                # Dynamic top header with avatars
-│   │   │   ├── TabBar.tsx                # iOS-style bottom tab bar
-│   │   │   ├── Dashboard.tsx             # Home screen
-│   │   │   ├── GroupDetail.tsx           # Group detail & member balances
-│   │   │   ├── AddExpenseModal.tsx       # Multi-mode expense entry
-│   │   │   └── SettlementModal.tsx       # Min-flow list & UPI actions
+│   │   │   ├── layout/                   # Android shell, StatusBar & BottomNavBar
+│   │   │   ├── home/                     # Cushion card & active group carousel
+│   │   │   ├── group/                    # Balances, smart settle & analytics
+│   │   │   ├── expense/                  # AI entry sheet & expense list
+│   │   │   └── profile/                  # UPI ID & preferences
 │   │   ├── index.css                     # Warm Pastel Harmony design tokens
 │   │   └── App.tsx                       # Main application shell
 │   └── package.json
@@ -205,7 +219,11 @@ Papper-Cutter/
 │   │       ├── money.rs                  # Minor units with serde support
 │   │       ├── split.rs                  # Equal, unequal, percentage splits
 │   │       └── settlement.rs             # Max-heap min-flow optimizer
-│   ├── papper-cutter-mobile/             # Cross-platform mobile bridge
+│   ├── papper-cutter-mobile/             # Native Dioxus 0.6 Android NDK Client
+│   │   └── src/
+│   │       ├── main.rs                   # Full native Dioxus mobile app
+│   │       ├── state.rs                  # In-memory reactive state
+│   │       └── theme.rs                  # Design tokens
 │   └── papper-cutter-server/             # Backend sync API (Axum)
 │
 ├── README.md                             # Project overview & quick start
@@ -216,9 +234,9 @@ Papper-Cutter/
 
 ---
 
-## 7. How to Run Locally
+## 7. How to Run Locally & Build Android APKs
 
-### 7.1 Running the Mobile / Web App (React + Vite)
+### 7.1 Running the Mobile App (React + Vite)
 ```powershell
 cd android-app
 npm install
@@ -226,12 +244,32 @@ npm run dev
 ```
 Open [http://localhost:5173](http://localhost:5173) in your browser. Use Mobile Emulation (iPhone 14 / Pixel 7) in DevTools for the ideal viewport experience.
 
-To test production build:
+### 7.2 Generating the Android APK via Capacitor
 ```powershell
+cd android-app
 npm run build
+npx cap add android
+npx cap sync android
+cd android
+.\gradlew.bat assembleDebug
+# Generated APK: android-app/android/app/build/outputs/apk/debug/app-debug.apk
 ```
 
-### 7.2 Running the Rust Domain Engine & Tests
+### 7.3 Building Native Android APK via Rust & Dioxus (NDK)
+```powershell
+# Add Android NDK targets:
+rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+
+# Method A: Dioxus CLI (dx)
+cd crates/papper-cutter-mobile
+dx build --platform android --release
+
+# Method B: cargo-apk headless
+cargo apk build --package papper-cutter-mobile --release
+# Generated APK: target/release/apk/papper_cutter_mobile.apk
+```
+
+### 7.4 Running the Rust Domain Engine & Tests
 ```powershell
 cargo test --workspace
 ```

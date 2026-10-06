@@ -43,7 +43,7 @@ Primary user question: **"What do I owe, and who do I need to pay?"**
 In strict adherence to [AGENTS.md](AGENTS.md):
 
 ```text
-Presentation Layer (React Web / Dioxus Mobile)
+Presentation Layer (React Mobile + Capacitor Android APK / Dioxus Native Rust Android NDK)
     ↓
 Application & State Coordination Layer (AppContext / Reducers)
     ↓
@@ -125,20 +125,30 @@ Ledger values represent minor currency units (**paise**):
 - **Never** perform addition, subtraction, or split ratios in floating point.
 - Conversions to/from major units (rupees) only occur at the user boundary.
 - Display helper uses the Indian grouping system:
-  $$\text{formatINR}(150000) = \text{"₹1,500.00"}, \quad \text{formatINR}(1842000) = \text{"₹18,420.00"}$$
+  ```text
+  formatINR(150000) = "₹1,500.00", formatINR(1842000) = "₹18,420.00"
+  ```
 
 ### 3.2 Equal Split Algorithm with Deterministic Remainder
 Given total paise $T$ and $N$ group participants:
-$$\text{Base} = \lfloor T / N \rfloor, \quad R = T \pmod N$$
+
+$$
+\text{Base} = \lfloor T / N \rfloor, \quad R = T \pmod N
+$$
+
 1. If $R > 0$ and the payer is a participant, assign $1\text{ extra paise}$ to the payer.
 2. If $R > 1$, allocate remaining single paise to participants sorted by `user_id` lexicographically.
-3. Invariant check: $\sum_{i=1}^N \text{Share}_i \equiv T$.
+3. Invariant check: $\sum_{i=1}^N \text{Share}(i) \equiv T$.
 
 ### 3.3 Group Net Balance Formulation
 For each group member $i$:
-$$\text{Net Balance}_i = \left(\sum \text{Contributions}_i - \sum \text{Shares}_i\right) + \left(\sum \text{Sent Settlements}_i - \sum \text{Received Settlements}_i\right)$$
-- $\text{Net} > 0$: **Creditor** (should receive money $\rightarrow$ Sage Matcha `#1A6B4B`).
-- $\text{Net} < 0$: **Debtor** (owes money $\rightarrow$ Soft Apricot `#91462E`).
+
+$$
+\text{Net Balance}(i) = \left(\sum \text{Contributions}(i) - \sum \text{Shares}(i)\right) + \left(\sum \text{Sent Settlements}(i) - \sum \text{Received Settlements}(i)\right)
+$$
+
+- $\text{Net} > 0$: **Creditor** (should receive money → Sage Matcha `#1A6B4B`).
+- $\text{Net} < 0$: **Debtor** (owes money → Soft Apricot `#91462E`).
 - $\text{Net} = 0$: **Settled** (even).
 
 ### 3.4 Min-Flow Settlement Optimization ($O(N \log N)$)
@@ -146,13 +156,21 @@ Instead of requiring $N(N-1)/2$ pairwise peer-to-peer transfers:
 1. Filter members with $\text{Net} > 0$ into **Creditors** ($C$) and $\text{Net} < 0$ into **Debtors** ($D$).
 2. Sort $C$ descending by credit amount; sort $D$ descending by debt amount.
 3. Match the largest debtor with the largest creditor:
-   $$\text{Payment Amount} = \min(C_{\text{head}}, D_{\text{head}})$$
+
+$$
+\text{Payment Amount} = \min(\text{Creditor Head}, \text{Debtor Head})
+$$
+
 4. Decrement debt and credit balances and advance pointers.
 5. Guaranteed to minimize total transaction count down to at most $N - 1$.
 
 ### 3.5 Automated UPI Deep-Linking
 For each generated transaction $T = (\text{From}, \text{To}, \text{Amount})$:
-$$\text{upi://pay?pa=}\text{\{To.upi\_id\}}\text{\&pn=}\text{\{To.name\}}\text{\&am=}\text{\{AmountInRupees\}}\text{\&cu=INR\&tn=Papper+Cutter+Settlement}$$
+
+```text
+upi://pay?pa={To.upi_id}&pn={To.name}&am={AmountInRupees}&cu=INR&tn=Papper+Cutter+Settlement
+```
+
 Tapping **"📲 Pay via UPI"** directly triggers payment apps (Google Pay, PhonePe, Paytm).
 
 ---
@@ -214,7 +232,7 @@ Design tokens mapped directly from [DESIGN.md](design-files/stitch_app_concept_s
 
 ---
 
-## 6. How to Run Locally
+## 6. How to Run Locally & Build Android APKs
 
 ### 1) Run the React Mobile App (Vite)
 ```bash
@@ -224,10 +242,30 @@ npm run dev
 ```
 Open `http://localhost:5173` in your browser. (Use device toggle `F12` for mobile preview).
 
-### 2) Run the Rust Domain & Mobile Apps
+### 2) Build Android APK via Capacitor (React + TypeScript)
 ```bash
+cd android-app
+npm run build
+npx cap add android
+npx cap sync android
+cd android && ./gradlew assembleDebug   # Windows: .\gradlew.bat assembleDebug
+# Output: android-app/android/app/build/outputs/apk/debug/app-debug.apk
+```
+
+### 3) Run & Build Native Rust Dioxus Android APK
+```bash
+# Test domain algorithms:
 cargo test
+
+# Run desktop mobile simulator:
 cargo run -p papper-cutter-mobile
+
+# Build native Android ARM64 release APK (NDK):
+cd crates/papper-cutter-mobile
+dx build --platform android --release
+# Or via cargo-apk:
+cargo apk build --package papper-cutter-mobile --release
+# Output: target/release/apk/papper_cutter_mobile.apk
 ```
 
 ---

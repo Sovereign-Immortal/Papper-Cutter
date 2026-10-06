@@ -110,7 +110,10 @@ Settle Mobile App
 
 ### 6.4 Smart Settlement Engine (Min-Flow Optimization)
 * **FR-4.1 Net Balance Derivation:**
-  $$\text{Net Balance}_i = \sum \text{Contributions}_i - \sum \text{Shares}_i$$
+
+  $$
+  \text{Net Balance}(i) = \sum \text{Contributions}(i) - \sum \text{Shares}(i)
+  $$
 * **FR-4.2 Debt Minimization Algorithm:**
   * Partition group members into Creditors ($\text{Net} > 0$), Debtors ($\text{Net} < 0$), and Settled ($\text{Net} = 0$).
   * Greedily match maximum debtor with maximum creditor to generate minimal payment pairs ($O(N \log N)$).
