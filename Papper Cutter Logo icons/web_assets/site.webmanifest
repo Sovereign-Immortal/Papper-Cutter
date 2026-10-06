@@ -1,0 +1,20 @@
+{
+  "name": "Papper Cutter - Smart Group Expense & Settlement",
+  "short_name": "Papper Cutter",
+  "icons": [
+    {
+      "src": "android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#FAF7F2",
+  "background_color": "#FAF7F2",
+  "display": "standalone",
+  "start_url": "../home_dashboard_pastel_comfy/code.html"
+}
