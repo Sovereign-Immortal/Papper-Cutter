@@ -1,0 +1,17 @@
+[application]
+name = "papper-cutter-mobile"
+default_platform = "web"
+out_dir = "dist"
+asset_dir = "assets"
+
+[web.app]
+title = "Papper Cutter"
+
+[web.watcher]
+reload_html = true
+watch_path = ["src", "assets"]
+
+[android.app]
+package = "com.pappercutter.app"
+name = "Papper Cutter"
+icon = "assets/icon.png"

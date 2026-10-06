@@ -1,0 +1,31 @@
+# Rust
+/target/
+**/*.rs.bk
+Cargo.lock
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# IDE
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Dioxus / Node / Frontend
+dist/
+node_modules/
+android-app/node_modules/
+android-app/dist/
+crates/settle-web/dist/
+.vite/
+
+# Database
+*.db
+*.sqlite
+
+# OS
+Thumbs.db
+

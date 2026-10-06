@@ -1,6 +1,6 @@
 # User Flow.md
 
-# Settle --- User Flow
+# Papper Cutter --- User Flow
 
 This document describes what happens when a **new user** and an
 **existing user** open the application.

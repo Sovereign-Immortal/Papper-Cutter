@@ -1,4 +1,4 @@
-# Papper cutter — Product Requirements Document (PRD)
+# Papper Cutter — Product Requirements Document (PRD)
 
 ---
 
@@ -21,10 +21,10 @@ Traditional approaches (WhatsApp chats, paper notes, spreadsheets, manual calcul
 * Friction in expense recording, leading to forgotten receipts and lost personal funds.
 
 ### 2.2 The Solution
-**Settle** is a calm, mobile-first shared expense tracking and automated settlement platform. It converts fragmented payment events into a continuous, real-time balance ledger, optimizes multi-party debt down to the minimum direct transactions, and enables near-instant expense capture via AI natural language parsing and receipt OCR.
+**Papper Cutter** is a calm, mobile-first shared expense tracking and automated settlement platform. It converts fragmented payment events into a continuous, real-time balance ledger, optimizes multi-party debt down to the minimum direct transactions, and enables near-instant expense capture via AI natural language parsing and receipt OCR.
 
 ### 2.3 Core Value Proposition
-> *"UPI moves money. Settle organizes the intelligence and logic before the payment."*
+> *"UPI moves money. Papper Cutter organizes the intelligence and logic before the payment."*
 
 ---
 

@@ -1,10 +1,10 @@
 # Solution.md
 
-# Settle --- Smart Group Expense Management
+# Papper Cutter --- Smart Group Expense Management
 
 ## 1. Executive Summary
 
-**Settle** is a smart group-expense management application designed for
+**Papper Cutter** is a smart group-expense management application designed for
 situations where multiple people share expenses.
 
 It is built for:

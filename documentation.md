@@ -1,10 +1,10 @@
 # Documentation.md
 
-# Settle --- Complete Product Documentation
+# Papper Cutter --- Complete Product Documentation
 
 ## 1. Product Overview
 
-Settle is a group expense management application designed to simplify
+Papper Cutter is a group expense management application designed to simplify
 shared money.
 
 It tracks:

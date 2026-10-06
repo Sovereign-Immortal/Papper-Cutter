@@ -1,0 +1,281 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --bg-canvas: #FAF7F2;
+  --surface-card: #FFFFFF;
+  --surface-low: #FDF2E8;
+  --surface-high: #F1E6DD;
+  --surface-border: #EFE8DF;
+  
+  --primary: #8B7BE8;
+  --primary-dark: #6B5CA5;
+  --primary-light: #E5DEFF;
+  
+  --credit-text: #1A6B4B;
+  --credit-bg: #E8F8F0;
+  --credit-border: #A5F3CA;
+  
+  --debt-text: #91462E;
+  --debt-bg: #FFF0ED;
+  --debt-border: #FFDAD6;
+  
+  --text-main: #201B15;
+  --text-muted: #635E59;
+  
+  --shadow-sm: 0 2px 6px -1px rgba(94, 87, 80, 0.04);
+  --shadow-card: 0 8px 24px -4px rgba(94, 87, 80, 0.06), 0 2px 6px -1px rgba(94, 87, 80, 0.04);
+  --shadow-lavender: 0 10px 28px -4px rgba(139, 123, 232, 0.25);
+  
+  --radius-card: 26px;
+  --radius-pill: 9999px;
+  --radius-input: 20px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: #EFE9E0;
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Android Device Shell Container */
+.android-device-shell {
+  width: 100%;
+  max-width: 430px;
+  height: 920px;
+  max-height: 95vh;
+  background-color: var(--bg-canvas);
+  border-radius: 44px;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.15), 0 0 0 10px #2D2621;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+@media (max-width: 480px) {
+  body {
+    background-color: var(--bg-canvas);
+    align-items: flex-start;
+  }
+  .android-device-shell {
+    max-width: 100%;
+    height: 100vh;
+    max-height: 100vh;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+
+/* Android Status Bar */
+.android-status-bar {
+  height: 44px;
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-main);
+  flex-shrink: 0;
+}
+
+.camera-cutout {
+  width: 12px;
+  height: 12px;
+  background-color: #201B15;
+  border-radius: 50%;
+}
+
+/* App Scrollable Content */
+.app-screen-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 18px 90px 18px;
+  scrollbar-width: none;
+}
+.app-screen-content::-webkit-scrollbar {
+  display: none;
+}
+
+/* Pill Navigation Bar */
+.android-nav-bar {
+  position: absolute;
+  bottom: 14px;
+  left: 18px;
+  right: 18px;
+  height: 68px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(20px);
+  border-radius: var(--radius-pill);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  box-shadow: var(--shadow-card);
+  border: 1px solid rgba(239, 232, 223, 0.8);
+  z-index: 50;
+  padding: 0 10px;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: var(--radius-pill);
+  transition: all 0.2s ease;
+}
+
+.nav-item.active {
+  color: var(--primary);
+  background-color: var(--primary-light);
+}
+
+.nav-item-center {
+  background: var(--primary);
+  color: white !important;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-lavender);
+  font-size: 24px;
+  margin-top: -16px;
+  transition: transform 0.15s ease;
+}
+.nav-item-center:active {
+  transform: scale(0.92);
+}
+
+/* Warm Pastel Cards */
+.warm-card {
+  background: var(--surface-card);
+  border-radius: var(--radius-card);
+  padding: 20px;
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--surface-border);
+  margin-bottom: 16px;
+}
+
+.balance-cushion {
+  background: linear-gradient(135deg, #FAF7F2 0%, #F5F0FF 100%);
+  border-radius: 28px;
+  padding: 24px 20px;
+  border: 1px solid #EAE3F7;
+  box-shadow: var(--shadow-card);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.balance-amount {
+  font-size: 38px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 6px 0;
+}
+
+.pill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  font-weight: 700;
+}
+.pill-badge.credit {
+  background: var(--credit-bg);
+  color: var(--credit-text);
+  border: 1px solid var(--credit-border);
+}
+.pill-badge.debt {
+  background: var(--debt-bg);
+  color: var(--debt-text);
+  border: 1px solid var(--debt-border);
+}
+
+/* Buttons */
+.btn-primary {
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 14px 24px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--shadow-lavender);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  transition: transform 0.15s ease, background 0.2s ease;
+}
+.btn-primary:active {
+  transform: scale(0.97);
+  background: var(--primary-dark);
+}
+
+.btn-secondary {
+  background: var(--surface-low);
+  color: var(--text-main);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-pill);
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Modals & Sheets */
+.bottom-sheet-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(45, 38, 33, 0.45);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.bottom-sheet {
+  background: var(--bg-canvas);
+  border-radius: 32px 32px 0 0;
+  padding: 24px 20px 34px 20px;
+  max-height: 85%;
+  overflow-y: auto;
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
+}
+
+.sheet-handle {
+  width: 44px;
+  height: 5px;
+  background: #D8D0C5;
+  border-radius: var(--radius-pill);
+  margin: 0 auto 18px auto;
+}

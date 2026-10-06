@@ -1,10 +1,10 @@
 # Idea Origin.md
 
-# Why Settle Exists --- Idea Origin
+# Why Papper Cutter Exists --- Idea Origin
 
 ## 1. The Observation
 
-The idea behind Settle comes from a very common situation:
+The idea behind Papper Cutter comes from a very common situation:
 
 A group of friends spends money together.
 
