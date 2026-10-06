@@ -1,281 +1,239 @@
-# Papper Cutter — Implementation Plan
+<p align="center">
+  <img src="assets/web_assets/papper_cutter_logo_horizontal.png" alt="Papper Cutter Banner" width="480" />
+</p>
 
-**Stack defaults (locked for this plan)**
+# Papper Cutter — Implementation Plan & Architecture Specification
 
-| Concern | Choice |
-| --- | --- |
-| Mobile App | React + TypeScript (Vite, mobile-first PWA / Android) / Dioxus |
-| UI Design | Warm Pastel Harmony ([DESIGN.md](design-files/stitch_app_concept_studio/warm_pastel_harmony/DESIGN.md)) |
-| Domain | Pure financial logic — integer minor units (paise) math |
-| Money | `i64` minor units (paise) only |
-| Settlement | Deterministic min-flow matching algorithm (O(N log N)) |
+**Stack defaults & engineering contracts**
+
+| Concern | Choice | Specification |
+| :--- | :--- | :--- |
+| **Mobile App (Web/Android)** | React 19 + TypeScript (Vite 8) | Mobile-first ergonomic PWA with Android phone container |
+| **Native Mobile Target** | Dioxus 0.6 + Rust | Shared cross-platform Rust domain binding |
+| **UI Design System** | Warm Pastel Harmony | [DESIGN.md](design-files/stitch_app_concept_studio/warm_pastel_harmony/DESIGN.md) (Plus Jakarta Sans, cozy cards) |
+| **Domain Logic** | Pure Financial Math | Minor currency units (paise) math, zero float rounding |
+| **Precision** | `i64` integer paise only | 1 INR = 100 paise; format at boundary |
+| **Settlement Engine** | Deterministic Min-Flow Matching | Greedy matching partitions ($O(N \log N)$) |
 
 ---
 
-## 1. Product north star
+## 1. Product North Star
 
-From the root docs ([solution.md](solution.md), [PRD](design-files/papper_cutter_product_requirements_document_prd.md)):
+From root documentation ([solution.md](solution.md), [PRD](design-files/papper_cutter_product_requirements_document_prd.md)):
 
-> Record who paid → fair shares → live balances → fewest settlement payments.
+> **Record who paid → Calculate fair shares → Live net balances → Fewest settlement payments via UPI.**
 
 Primary user question: **"What do I owe, and who do I need to pay?"**
 
 ---
 
-## 2. Workspace layout
+## 📱 Concept Studio & UI Showcase
+
+<p align="center">
+  <img src="assets/web_assets/screenshots/home_dashboard.png" width="22%" alt="Home Dashboard" />
+  <img src="assets/web_assets/screenshots/group_detail.png" width="22%" alt="Group Detail" />
+  <img src="assets/web_assets/screenshots/smart_settlement.png" width="22%" alt="Smart Settlement" />
+  <img src="assets/web_assets/screenshots/add_expense.png" width="22%" alt="Add Expense Modal" />
+</p>
+
+---
+
+## 2. Workspace Layout & Four-Layer Architecture
+
+In strict adherence to [AGENTS.md](AGENTS.md):
+
+```text
+Presentation Layer (React Web / Dioxus Mobile)
+    ↓
+Application & State Coordination Layer (AppContext / Reducers)
+    ↓
+Domain / Business Rules (Money, Splits, Balances, Min-Flow Settlement)
+    ↑
+Data & Infrastructure Layer (API, Local Storage, UPI Deep Links)
+```
+
+### Physical Directory Tree
 
 ```text
 Papper-Cutter/
-├── Cargo.toml                 # workspace
-├── IMPLEMENTATION_PLAN.md
-├── AGENTS.md                  # engineering principles (source of truth)
+├── assets/                               # Brand logos, icons, wordmarks, and screenshot artifacts
+│   ├── Primarylogo.png
+│   ├── primary_transparent.png
+│   └── web_assets/
+│       ├── papper_cutter_logo_horizontal.png
+│       ├── papper_cutter_icon.png
+│       └── screenshots/
+│
+├── android-app/                          # React 19 + TypeScript + Vite mobile application
+│   ├── src/
+│   │   ├── domain/                       # Pure financial business rules (TypeScript)
+│   │   │   ├── money.ts                 # Integer paise precision (Money class & Indian formatting)
+│   │   │   ├── split.ts                 # Equal, unequal, and percentage split calculations
+│   │   │   ├── balance.ts               # Net balance aggregation equation
+│   │   │   ├── settlement.ts            # Min-flow greedy settlement optimizer & UPI generator
+│   │   │   └── types.ts                 # Domain models (User, Group, Expense, Category, etc.)
+│   │   ├── state/                       # App state management
+│   │   │   ├── sampleData.ts            # Realistic trip data (Manali Trip, Room 304, College Fest)
+│   │   │   ├── AppContext.tsx           # Reactive global state provider
+│   │   │   └── useApp.ts                # Fast-refresh custom context hook
+│   │   ├── components/                  # Modular UI components
+│   │   │   ├── layout/                  # Device shell, StatusBar, and Pill BottomNavBar
+│   │   │   ├── home/                    # Balance cushion, group carousel, recent expenses
+│   │   │   ├── group/                   # Header pulse, expenses, balances, settle, analytics, members
+│   │   │   ├── expense/                 # AI bottom-sheet modal & all-expenses list
+│   │   │   └── profile/                 # Profile, avatar, UPI ID, app configuration
+│   │   ├── index.css                    # Warm Pastel Harmony CSS tokens & mobile animations
+│   │   ├── App.tsx                      # Root screen controller
+│   │   └── main.tsx
+│   ├── package.json
+│   └── vite.config.ts
+│
 ├── crates/
-│   ├── settle-domain/         # splits, balances, settlement (pure + tests)
-│   ├── settle-db/             # sqlx types, queries, migrations
-│   ├── settle-api/            # Axum HTTP API + auth
-│   └── settle-web/            # Dioxus WASM app
-├── migrations/                # SQL migrations (owned by settle-db)
-└── docs/                      # existing product docs stay at root
+│   ├── papper-cutter-domain/            # Pure, zero-dependency Rust financial domain library
+│   │   └── src/
+│   │       ├── money.rs                 # Money(pub i64) minor units type with operator overloading
+│   │       ├── split.rs                 # Deterministic remainder equal & percentage splits
+│   │       ├── balance.rs               # Group balance calculation engine
+│   │       ├── settlement.rs            # Greedy min-flow settlement algorithm & unit tests
+│   │       ├── types.rs                 # Core domain entities
+│   │       └── lib.rs
+│   │
+│   └── papper-cutter-mobile/            # Dioxus-based cross-platform Rust mobile client
+│       └── src/
+│           ├── main.rs                  # Dioxus component views (Home, Groups, Settle, AI Add)
+│           ├── state.rs                 # In-memory reactive state
+│           └── theme.rs                 # Design system tokens
+│
+├── design-files/                         # Concept studio UI specifications & PRD
+│   ├── papper_cutter_product_requirements_document_prd.md
+│   └── stitch_app_concept_studio/
+│       └── warm_pastel_harmony/DESIGN.md
+│
+├── .cargo/config.toml                   # LLVM-MinGW Windows toolchain & linker configuration
+├── Cargo.toml                           # Cargo multi-crate workspace
+├── IMPLEMENTATION_PLAN.md               # Phased roadmap and architectural delivery status
+├── AGENTS.md                            # Non-negotiable engineering principles & quality guide
+└── README.md
 ```
 
-Layering (matches [AGENTS.md](AGENTS.md)):
+---
 
-```text
-settle-web (Presentation)
-        ↓ HTTP JSON
-settle-api (Application / auth / orchestration)
-        ↓
-settle-domain (Business rules)
-        ↑
-settle-db (Data / infrastructure)
+## 3. Methods & Domain Mathematical Architecture
+
+### 3.1 Financial Precision (Integer Minor Units)
+Ledger values represent minor currency units (**paise**):
+- **Never** perform addition, subtraction, or split ratios in floating point.
+- Conversions to/from major units (rupees) only occur at the user boundary.
+- Display helper uses the Indian grouping system:
+  $$\text{formatINR}(150000) = \text{"₹1,500.00"}, \quad \text{formatINR}(1842000) = \text{"₹18,420.00"}$$
+
+### 3.2 Equal Split Algorithm with Deterministic Remainder
+Given total paise $T$ and $N$ group participants:
+$$\text{Base} = \lfloor T / N \rfloor, \quad R = T \pmod N$$
+1. If $R > 0$ and the payer is a participant, assign $1\text{ extra paise}$ to the payer.
+2. If $R > 1$, allocate remaining single paise to participants sorted by `user_id` lexicographically.
+3. Invariant check: $\sum_{i=1}^N \text{Share}_i \equiv T$.
+
+### 3.3 Group Net Balance Formulation
+For each group member $i$:
+$$\text{Net Balance}_i = \left(\sum \text{Contributions}_i - \sum \text{Shares}_i\right) + \left(\sum \text{Sent Settlements}_i - \sum \text{Received Settlements}_i\right)$$
+- $\text{Net} > 0$: **Creditor** (should receive money $\rightarrow$ Sage Matcha `#1A6B4B`).
+- $\text{Net} < 0$: **Debtor** (owes money $\rightarrow$ Soft Apricot `#91462E`).
+- $\text{Net} = 0$: **Settled** (even).
+
+### 3.4 Min-Flow Settlement Optimization ($O(N \log N)$)
+Instead of requiring $N(N-1)/2$ pairwise peer-to-peer transfers:
+1. Filter members with $\text{Net} > 0$ into **Creditors** ($C$) and $\text{Net} < 0$ into **Debtors** ($D$).
+2. Sort $C$ descending by credit amount; sort $D$ descending by debt amount.
+3. Match the largest debtor with the largest creditor:
+   $$\text{Payment Amount} = \min(C_{\text{head}}, D_{\text{head}})$$
+4. Decrement debt and credit balances and advance pointers.
+5. Guaranteed to minimize total transaction count down to at most $N - 1$.
+
+### 3.5 Automated UPI Deep-Linking
+For each generated transaction $T = (\text{From}, \text{To}, \text{Amount})$:
+$$\text{upi://pay?pa=}\text{\{To.upi\_id\}}\text{\&pn=}\text{\{To.name\}}\text{\&am=}\text{\{AmountInRupees\}}\text{\&cu=INR\&tn=Papper+Cutter+Settlement}$$
+Tapping **"📲 Pay via UPI"** directly triggers payment apps (Google Pay, PhonePe, Paytm).
+
+---
+
+## 4. UI/UX Direction: Warm Pastel Harmony
+
+Design tokens mapped directly from [DESIGN.md](design-files/stitch_app_concept_studio/warm_pastel_harmony/DESIGN.md):
+
+| Token | Hex / Value | Semantic Role |
+| :--- | :--- | :--- |
+| `--bg-canvas` | `#FAF7F2` | Warm Cozy Cream base background |
+| `--surface-card` | `#FFFFFF` | Crisp elevated container card |
+| `--surface-low` | `#FDF2E8` | Warm Linen subtle pill / chip background |
+| `--surface-high` | `#F1E6DD` | Soft Oat navigation rail / sub-tab track |
+| `--surface-border` | `#EFE8DF` | Hairline border separator |
+| `--primary` | `#8B7BE8` | Gentle Lavender primary action accent |
+| `--primary-dark` | `#6B5CA5` | Deep Lavender active button state |
+| `--primary-light` | `#E5DEFF` | Lavender tint pill badge |
+| `--credit-text` | `#1A6B4B` | Sage Matcha positive balance ("You are owed") |
+| `--credit-bg` | `#E8F8F0` | Sage Matcha pill background |
+| `--credit-border` | `#A5F3CA` | Sage Matcha card outline |
+| `--debt-text` | `#91462E` | Soft Apricot Coral negative balance ("You owe") |
+| `--debt-bg` | `#FFF0ED` | Soft Apricot pill background |
+| `--debt-border` | `#FFDAD6` | Soft Apricot card outline |
+| `--radius-card` | `26px` | Soft pill-like card curvature |
+| `--radius-pill` | `9999px` | Fully rounded ergonomic buttons |
+
+---
+
+## 5. Phased Delivery Roadmap & Current Status
+
+### Phase 0 — Foundation & Environment (Completed)
+- [x] Multi-crate workspace setup (`crates/papper-cutter-domain`, `crates/papper-cutter-mobile`)
+- [x] Windows MinGW/LLVM toolchain configuration ([`.cargo/config.toml`](.cargo/config.toml))
+- [x] Pure financial domain algorithms in Rust (`Money`, `split`, `balance`, `settlement`)
+- [x] 100% Rust unit test coverage passing (`cargo test`)
+- [x] Complete TypeScript domain port (`money.ts`, `split.ts`, `balance.ts`, `settlement.ts`, `types.ts`)
+- [x] Mobile React 19 + TypeScript application initialized and built with Vite 8
+
+### Phase 1 — MVP Ledger & Mobile Experience (Completed)
+- [x] In-memory reactive state with seed trip groups (Manali Trip, Room 304, College Fest)
+- [x] Home Dashboard with Net Balance Cushion Card & Active Groups Carousel
+- [x] Group Pulse Header Card with total spent and user share
+- [x] Group Balances subtab with credit/debt pill badges
+- [x] Smart Settle subtab with min-flow minimization banner ($N^2 \rightarrow N-1$)
+- [x] Automated UPI deep-link generation (`upi://pay?pa=...`)
+- [x] Interactive "Mark Paid ✓" tracking with live debt recalculation & celebration empty state
+- [x] AI Natural-Language Expense Entry modal with one-click test chips
+- [x] Category analytics breakdown with progress bars
+- [x] All Expenses filterable feed and Profile view
+- [x] Comprehensive documentation and visual asset integration
+
+### Phase 2 — Backend Persistence & Auth (Next Phase)
+- [ ] Axum HTTP API service
+- [ ] SQLite / PostgreSQL schema migrations
+- [ ] Passwordless or session authentication
+- [ ] Real-time sync across group members
+- [ ] Receipt OCR document upload scanner
+
+---
+
+## 6. How to Run Locally
+
+### 1) Run the React Mobile App (Vite)
+```bash
+cd android-app
+npm install
+npm run dev
+```
+Open `http://localhost:5173` in your browser. (Use device toggle `F12` for mobile preview).
+
+### 2) Run the Rust Domain & Mobile Apps
+```bash
+cargo test
+cargo run -p papper-cutter-mobile
 ```
 
-`settle-web` never imports settlement math. `settle-domain` never imports Axum, SQLx, or Dioxus.
-
 ---
 
-## 3. Domain model (Phase 1)
-
-### Money
-
-```rust
-/// Amount in minor currency units (paise for INR).
-pub struct Money(pub i64);
-```
-
-No `f64` in financial paths. Format for display only at UI / API boundary.
-
-### Core entities
-
-| Entity | Key fields |
-| --- | --- |
-| User | id, name, email, preferred_currency |
-| Group | id, name, category, created_by |
-| Membership | group_id, user_id, role |
-| Expense | id, group_id, amount_paise, currency, description, category, paid_by, split_type, date |
-| ExpenseShare | expense_id, user_id, share_paise |
-| Settlement | id, group_id, from_user, to_user, amount_paise, status |
-
-### Split types (MVP)
-
-1. **Equal** — floor division; remainder paise assigned deterministically (to payer, then by stable member id order).
-2. **Unequal** — explicit per-member amounts; sum must equal expense total.
-
-Deferred to Phase 2+: Percentage, Item-based.
-
-### Balance
-
-```text
-net_i = sum(contributions_i) - sum(shares_i)
-```
-
-Positive → should receive. Negative → owes. Zero → settled.
-
-### Settlement engine
-
-Input: map of `user_id → net_paise`.  
-Output: minimal list of `{ from, to, amount }`.
-
-Algorithm (PRD FR-4.2): partition creditors / debtors; greedily match largest debtor with largest creditor (`O(n log n)`). Deterministic ordering for stable tests.
-
-Settlement lifecycle:
-
-```text
-Pending → MarkedPaid → Confirmed
-```
-
-UPI deep-link generation is API/UI concern; domain only produces amounts and parties.
-
----
-
-## 4. API surface (Phase 1)
-
-Base: `/api/v1`
-
-| Area | Endpoints |
-| --- | --- |
-| Auth | `POST /auth/register`, `POST /auth/login`, `POST /auth/logout`, `GET /auth/me` |
-| Groups | `GET/POST /groups`, `GET/PATCH /groups/:id`, `POST /groups/:id/members`, `POST /groups/join` |
-| Expenses | `GET/POST /groups/:id/expenses`, `GET/PATCH/DELETE /expenses/:id` |
-| Balances | `GET /groups/:id/balances` |
-| Settlements | `GET /groups/:id/settlements`, `POST /groups/:id/settlements/generate`, `POST /settlements/:id/mark-paid`, `POST /settlements/:id/confirm` |
-
-Rules:
-
-- Server verifies membership on every group-scoped route.
-- Balances and settlement suggestions are **recomputed from expenses**, never trusted from the client.
-- Amounts in JSON are integers (paise) plus a display helper string if useful.
-
----
-
-## 5. Dioxus web app structure
-
-```text
-settle-web/src/
-├── main.rs
-├── app.rs                 # router + layout
-├── routes/
-│   ├── welcome.rs
-│   ├── auth.rs
-│   ├── home.rs
-│   ├── groups/
-│   │   ├── list.rs
-│   │   ├── detail.rs
-│   │   └── create.rs
-│   ├── expenses/
-│   │   ├── add.rs
-│   │   └── list.rs
-│   ├── settle.rs
-│   └── profile.rs
-├── components/
-│   ├── ui/                # Button, Input, Avatar, Skeleton, EmptyState
-│   ├── MoneyAmount.rs
-│   ├── BalanceCard.rs
-│   ├── ExpenseRow.rs
-│   ├── SettlementRow.rs
-│   └── NavBar.rs
-├── services/              # HTTP client wrappers
-├── hooks/
-└── styles/                # CSS variables from DESIGN.md
-```
-
-**Navigation (mobile-first)**
-
-```text
-Home | Expenses | [Add] | Groups | Profile
-```
-
-Desktop: compact sidebar with the same destinations.
-
-**Screens mapped from design stubs**
-
-| Screen | Design reference |
-| --- | --- |
-| Home | `home_dashboard_pastel_comfy` |
-| Group detail | `group_detail_pastel_comfy` |
-| Add expense | `add_expense_pastel_comfy` |
-| Settlement | `smart_settlement_pastel_comfy` |
-
-CSS tokens: surface `#fff8f4`, primary `#5c4bb5`, credit mint, debt peach — from Warm Pastel Harmony. Typography: Plus Jakarta Sans.
-
----
-
-## 6. Phased delivery
-
-### Phase 0 — Foundation (Completed)
-
-- [x] Workspace + crates (`papper-cutter-domain`, `papper-cutter-mobile`)
-- [x] Domain: `Money` (integer paise), equal/unequal split, balance, min-flow settlement + 100% unit tests passing
-- [x] Mobile shell (Rust Dioxus & React/Vite Android app): Warm Pastel Harmony tokens, Home, Groups, Settle, Expenses, Profile
-- [x] Windows MinGW/LLVM toolchain configuration (`.cargo/config.toml` & `stable-x86_64-pc-windows-gnullvm`)
-- [x] README: how to run (React Android app & Rust crates)
-
-### Phase 1 — MVP Ledger (PRD Phase 1)
-
-1. [x] Group state & members
-2. [x] Add expense (equal + unequal + AI natural language smart entry)
-3. [x] Group balances view (contributions, shares, net balances with credit/debt pill badges)
-4. [x] Generate settlement plan (min-flow algorithm) + mark paid / confirm
-5. [x] UPI deep-link generation on settlement cards (`upi://pay?pa=...`)
-6. [x] Category analytics & spending breakdowns
-7. [ ] Auth (register / login / session - server integration)
-
-**Definition of done:** new user can create a trip group, add one expense, see “you are owed”, and settle with one suggested payment.
-
-### Phase 2 — Smart input
-
-- Natural-language expense parse → review → confirm (AI never commits ledger)
-- Receipt upload + OCR → review → confirm
-- Push / email settlement reminders
-
-### Phase 3 — Analytics & advanced splits
-
-- Percentage + item-based splits
-- Category analytics
-- Group budget warnings
-- Multi-currency (store original + optional conversion; never silently rewrite original)
-
-### Phase 4 — Offline & polish
-
-- Local cache (SQLite / IndexedDB strategy)
-- Conflict policy for offline writes
-- Desktop / mobile Dioxus targets sharing `settle-domain`
-
----
-
-## 7. Testing priorities
-
-Always in `settle-domain`:
-
-- Equal split with remainder (₹100 / 3 people)
-- Unequal sum validation
-- Zero / one-paise / large amounts
-- Multi creditor / multi debtor minimization
-- Idempotent balance after expense edit/delete scenarios (API integration tests later)
-
-UI: critical journeys (signup → group → expense → settle) once API is stable.
-
----
-
-## 8. Security checklist
-
-- No secrets in `settle-web`
-- Password hashing (argon2) on API
-- HttpOnly session cookies (SameSite)
-- Membership checks server-side
-- Receipt uploads treated as untrusted binary
-- Never accept client-supplied balances
-
----
-
-## 9. Near-term build order (execution sequence)
-
-```text
-1. settle-domain  → money + splits + settlement + tests
-2. settle-db      → schema migrations (users, groups, expenses, shares, settlements)
-3. settle-api     → auth + groups + expenses + balances + settlements
-4. settle-web     → design system shell → Home → Groups → Add Expense → Settle
-```
-
-Each step should leave `cargo test -p settle-domain` and `cargo check` green.
-
----
-
-## 10. Out of scope for MVP
-
-- Payment provider settlement (UPI deep-link only)
-- Chat, event planning
-- Recurring expenses
-- Full offline write sync
-- Native iOS/Android packaging
-
----
-
-## Sources
-
-- [AGENTS.md](AGENTS.md) — architecture & quality rules  
-- [INSTRUCTIONS.md](INSTRUCTIONS.md) — agent / UI rules  
-- [documentation.md](documentation.md) — full product surface  
-- [user_flow.md](user_flow.md) — new vs returning flows  
-- [solution.md](solution.md) / [idea_origin.md](idea_origin.md) — positioning  
-- [PRD](design-files/papper_cutter_product_requirements_document_prd.md) — milestones & FR  
+<p align="center">
+  <img src="assets/primary_transparent.png" width="100" alt="Papper Cutter Logo" />
+  <br />
+  <sub>Papper Cutter Engineering Architecture • Updated October 2026</sub>
+</p>

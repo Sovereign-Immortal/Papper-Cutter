@@ -1,6 +1,8 @@
-# Documentation.md
+<p align="center">
+  <img src="assets/web_assets/papper_cutter_logo_horizontal.png" alt="Papper Cutter Banner" width="480" />
+</p>
 
-# Papper Cutter --- Complete Product Documentation
+# Papper Cutter — Complete Product Documentation
 
 ## 1. Product Overview
 
@@ -107,6 +109,12 @@ Each group contains:
 -   Activity
 -   Optional analytics
 
+<p align="center">
+  <img src="assets/web_assets/screenshots/group_detail.png" width="280" alt="Group Detail Screen" />
+  <br />
+  <em>Group Detail View with pulse spending card, member balances, and sub-tabs.</em>
+</p>
+
 ------------------------------------------------------------------------
 
 # 6. Group Creation
@@ -159,6 +167,12 @@ It should contain:
 -   Notes
 -   Receipt reference
 -   Creation metadata
+
+<p align="center">
+  <img src="assets/web_assets/screenshots/add_expense.png" width="280" alt="Add Expense Modal" />
+  <br />
+  <em>Add Expense Bottom Sheet Modal with natural-language AI entry and category pills.</em>
+</p>
 
 ------------------------------------------------------------------------
 
@@ -315,6 +329,11 @@ If zero:
 
 The settlement engine converts net balances into payment suggestions.
 
+<div align="center">
+  <img src="./assets/web_assets/screenshots/smart_settlement.png" width="280" alt="Smart Settlement Flow" style="border-radius: 18px; box-shadow: 0 8px 30px rgba(0,0,0,0.12); margin: 16px 0;" />
+  <p><em>Figure: Min-flow settlement algorithm with 1-click UPI payments (GPay, PhonePe, Paytm).</em></p>
+</div>
+
 Example:
 
 ``` text
@@ -384,6 +403,11 @@ The important principle is:
 # 20. Dashboard
 
 The home dashboard is the user's financial overview.
+
+<div align="center">
+  <img src="./assets/web_assets/screenshots/home_dashboard.png" width="280" alt="Home Dashboard Overview" style="border-radius: 18px; box-shadow: 0 8px 30px rgba(0,0,0,0.12); margin: 16px 0;" />
+  <p><em>Figure: Home Screen with net balance summary, active group cards, and quick actions.</em></p>
+</div>
 
 It can show:
 
